@@ -19,3 +19,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 project = "labyrinth_game.main:main"
+[dependency-groups]
+dev = [
+    "ruff (>=0.14.14,<0.15.0)"
+]
