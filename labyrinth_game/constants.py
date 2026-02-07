@@ -14,7 +14,7 @@ ROOMS = {
     },
     'trap_room': {
           'description': 'Комната с хитрой плиточной поломкой. На стене видна надпись: "Осторожно — ловушка".',
-          'exits': {'west': 'entrance'},
+          'exits': {'west': 'entrance', 'north': 'secret_room'},
           'items': ['rusty_key'],
           'puzzle': ('Система плит активна. Чтобы пройти, назовите слово "шаг" три раза подряд (введите "шаг шаг шаг")', 'шаг шаг шаг')
     },
@@ -38,14 +38,14 @@ ROOMS = {
     },
     'secret_room': {
         'description': 'Секретная комната. Комната на столько секретная что ее никто не видел.',
-        'exits': {'west': 'armory', 'north': 'hidden_shrine'},
+        'exits': {'south': 'trap_room', 'north': 'hidden_shrine'},
         'items': ['secret_thing'],
         'puzzle': None,
     },
     'hidden_shrine': {
         'description': 'Тайное святилище. В центре комнаты светится алтарь.',
         'exits': {'south': 'secret_room'},
-        'items': ['mystic_gem'],
+        'items': ['mistary_gem'],
         'puzzle': ('На алтаре надпись: "Назови цвет камня, который сияет как звезда ночью".', 'синий'),
     }
 }

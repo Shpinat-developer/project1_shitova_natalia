@@ -1,9 +1,13 @@
+#импортируем нужные модули и переменные
 from labyrinth_game.constants import ROOMS
 import math
 
+#фукция описания комнаты
 def describe_current_room(game_state: dict) -> None:
     room_name = game_state['current_room']
     room = ROOMS[room_name]
+
+    #текущая комната
     print(f"== {room_name.upper()} ==")
 
     # Описание комнаты
@@ -24,44 +28,43 @@ def describe_current_room(game_state: dict) -> None:
     if room['puzzle'] is not None:
         print("Кажется, здесь есть загадка.")
 
+#функция решения загадок
 def solve_puzzle(game_state: dict) -> None:
-    """Пытается решить загадку в текущей комнате."""
     from labyrinth_game.player_actions import get_input
-
     room_name = game_state['current_room']
     room = ROOMS[room_name]
     puzzle = room['puzzle']
-
     if puzzle is None:
         print("Загадок здесь нет.")
         return
-
     question, answer = puzzle
     print(question)
-
     user_answer = get_input("Ваш ответ: ")
     normalized = user_answer.strip().lower()
-
     # допускаем несколько вариантов ответа
     if isinstance(answer, (list, tuple, set)):
         correct = any(normalized == str(opt).strip().lower() for opt in answer)
     else:
         correct = normalized == str(answer).strip().lower()
-
     if correct:
         print("Верно! Вы разгадали загадку.")
         inventory = game_state['player_inventory']
-
-        # Награды только для нужных комнат по методичке
         if room_name == 'hall':
-            if 'rusty_key' not in inventory:
-                inventory.append('rusty_key')
-                print("Вы находите ржавый ключ и кладёте его в инвентарь.")
+            if 'shield' not in inventory:
+                inventory.append('shield')
+                print("Вы находите щит и кладёте его в инвентарь.")
         elif room_name == 'library':
             if 'sword' not in inventory:
-                inventory.append('sword')
-                print("Вы находите меч и кладёте его в инвентарь.")
-
+                inventory.append('ancient scroll')
+                print("Вы находите древний свиток и кладёте его в инвентарь.")
+        elif room_name == 'hidden_shrine':
+            if 'treasure_key' not in inventory:
+                inventory.append('treasure_key')
+                print("Вы находите ключ для открытия сокровищницы и кладёте его в инвентарь.")
+        elif room_name == 'trap_room':
+            if 'treasure_key' not in inventory:
+                inventory.append('ancient_bone')
+                print("Вы находите кость древнего человека и кладёте ее в инвентарь.")
         # загадку можно решить только один раз
         room['puzzle'] = None
     else:
@@ -71,6 +74,7 @@ def solve_puzzle(game_state: dict) -> None:
             trigger_trap(game_state)
 
 def attempt_open_treasure(game_state: dict) -> None:
+    from labyrinth_game.player_actions import get_input
     """Пытается открыть сундук с сокровищами и завершить игру победой."""
     room_name = game_state["current_room"]
     room = ROOMS[room_name]
@@ -82,7 +86,6 @@ def attempt_open_treasure(game_state: dict) -> None:
     # проверка ключа
     inventory = game_state["player_inventory"]
     has_key = "treasure_key" in inventory
-
     if has_key:
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
         if "treasure_chest" in room["items"]:
