@@ -96,7 +96,7 @@ def attempt_open_treasure(game_state: dict) -> None:
 
     # ключа нет, предлагаем ввести код
     response = get_input("Сундук заперт... Ввести код? (да/нет): ")
-    if response != "да":
+    if response != "да" and response != "yes":
         print("Вы отступаете от сундука.")
         return
 
