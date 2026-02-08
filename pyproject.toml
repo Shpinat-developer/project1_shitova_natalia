@@ -3,6 +3,9 @@ name = "project1_shitova_natalia"
 version = "0.1.0"
 description = "Текстовое приключение 'Лабиринт сокровищ'"
 authors = ["Shpinat <dzeshnik@mail.ru>"]
+packages = [
+  { include = "labyrinth_game" }
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -10,6 +13,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 project = "labyrinth_game.main:main"
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = ">=0.14.14,<0.15.0"
